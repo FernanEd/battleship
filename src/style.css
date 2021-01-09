@@ -79,11 +79,12 @@ a:hover {
   margin: auto;
 
   padding: 2em;
+  border: 0;
   border-radius: 1.5em;
   background-color: var(--light);
 
   box-sizing: border-box;
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
 }
 
 .btn {
