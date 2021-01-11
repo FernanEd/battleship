@@ -3,11 +3,16 @@ import Gameboard from './Gameboard';
 
 export default function Game({ computerDifficulty }) {
   //player 0 = human, player 1 = computer
-  let [isPlayerTurn, setisPlayerTurn] = useState(true);
+  let [isPlayerTurn, setIsPlayerTurn] = useState(true);
+  const [isGameover, setIsGameover] = useState(false);
 
   const changeTurn = () => {
     let lastTurn = isPlayerTurn;
-    setisPlayerTurn(!lastTurn);
+    setIsPlayerTurn(!lastTurn);
+  };
+
+  const makeGameOver = () => {
+    setIsGameover(true);
   };
 
   useEffect(() => {}, []);
@@ -26,6 +31,8 @@ export default function Game({ computerDifficulty }) {
             isPlayerTurn={isPlayerTurn}
             changeTurn={changeTurn}
             computerDifficulty={computerDifficulty}
+            isGameover={isGameover}
+            makeGameOver={makeGameOver}
           />
         </div>
         <div>
@@ -35,6 +42,8 @@ export default function Game({ computerDifficulty }) {
             isPlayerTurn={isPlayerTurn}
             changeTurn={changeTurn}
             computerDifficulty={computerDifficulty}
+            isGameover={isGameover}
+            makeGameOver={makeGameOver}
           />
         </div>
       </div>

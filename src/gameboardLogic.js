@@ -33,11 +33,10 @@ function shiftAxis(index, arrayWidth) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function factoryGameboard(boardWidth) {
+function factoryGameboard(boardWidth, generateBoard) {
   let boats = [];
 
-  let boatsCoords; //All coords that are boats
-
+  let boatsCoords = []; //All coords that are boats
   let hitsCoords = []; //All coords of boats hits
   let missesCoords = []; //All coords of missed shots
 
@@ -74,23 +73,44 @@ function factoryGameboard(boardWidth) {
   };
 
   const checkGameOver = () => {
-    return boats.every((boat) => boat.isSunk);
+    return boatsCoords.length > 0 && boats.every((boat) => boat.isSunk);
   };
 
-  //Place carrier on cell #2 horizontally;
-  placeShip(1, 5, 0);
+  const placeComputerShips = () => {
+    let shipLengths = [5, 4, 3, 2, 2];
 
-  //Place small boat on cell #12 vertically;
-  placeShip(31, 2, 1);
+    shipLengths.forEach((shipLength) => {
+      let cellCoord = Math.floor(Math.random() * 99); //From 0 to 99
+      let axis = Math.round(Math.random()); //Either 0 or 1
+      let shipPotentialCoords = giveShipCoords(
+        boardWidth,
+        cellCoord,
+        shipLength,
+        axis
+      );
 
-  //Place small boat on cell #12 vertically;
-  placeShip(25, 4, 1);
+      // WARNING: The order of these conditions it's important, leftone must evaluate first
+      // If any coord it's already ocuppied, generate new coords
+      while (
+        shipPotentialCoords === null ||
+        shipPotentialCoords.some((coord) => boatsCoords.includes(coord))
+      ) {
+        cellCoord = Math.floor(Math.random() * 99); //From 0 to 99
+        axis = Math.round(Math.random()); //Either 0 or 1
+        shipPotentialCoords = giveShipCoords(
+          boardWidth,
+          cellCoord,
+          shipLength,
+          axis
+        );
+      }
 
-  //Place small boat on cell #12 vertically;
-  placeShip(82, 3, 0);
+      //Now the cell and axis is addecuate to place a ship
+      placeShip(cellCoord, shipLength, axis);
+    });
+  };
 
-  //Place small boat on cell #12 vertically;
-  placeShip(79, 2, 1);
+  if (generateBoard) placeComputerShips();
 
   return {
     boatsCoords,
@@ -99,6 +119,7 @@ function factoryGameboard(boardWidth) {
     placeShip,
     receiveAttack,
     checkGameOver,
+    placeComputerShips,
   };
 }
 

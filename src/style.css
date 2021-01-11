@@ -164,6 +164,7 @@ a:hover {
 .cell {
   border: 1px solid var(--secondary);
   padding: 1em;
+  cursor: pointer;
 }
 
 .cell:hover {

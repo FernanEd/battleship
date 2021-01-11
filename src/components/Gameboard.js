@@ -8,25 +8,23 @@ export default function Gameboard({
   isPlayerTurn,
   changeTurn,
   computerDifficulty,
+  isGameover,
+  makeGameOver,
 }) {
   // BOARD STATE
   const boardWidth = 10;
-  const [gameboard, setGameboard] = useState(factoryGameboard(boardWidth));
-
-  const [boatsCoords, setBoatsCoords] = useState(gameboard.boatsCoords);
-  const [hitsCoords, setHitsCoords] = useState(gameboard.hitsCoords);
-  const [missesCoords, setMissesCoords] = useState(gameboard.missesCoords);
+  const [gameboard, setGameboard] = useState(
+    factoryGameboard(boardWidth, !isPlayerBoard)
+  );
 
   const markSpot = (coord) => {
-    let newGameboard = Object.assign({}, gameboard);
+    let newGameboard = { ...gameboard };
     newGameboard.receiveAttack(coord);
-
     setGameboard(newGameboard);
-    setHitsCoords(newGameboard.hitsCoords);
-    setMissesCoords(newGameboard.missesCoords);
   };
 
   const makeCPUmove = () => {
+    let { boatsCoords, hitsCoords, missesCoords } = gameboard;
     markSpot(
       boardAnalisis(computerDifficulty, boatsCoords, [
         ...hitsCoords,
@@ -38,36 +36,41 @@ export default function Gameboard({
 
   //After this function runs, the useEffect of the bottom is supposed to run
   const handleClick = (cellIndex) => {
-    let usedCoords = [...hitsCoords, ...missesCoords];
+    let { boatsCoords, hitsCoords, missesCoords } = gameboard;
 
-    if (isPlayerTurn && !usedCoords.includes(cellIndex)) {
+    let usedCoords = [...hitsCoords, ...missesCoords];
+    if (isPlayerTurn && !usedCoords.includes(cellIndex) && !isGameover) {
       markSpot(cellIndex);
       changeTurn();
     }
   };
 
+  // Every time a move is made
   useEffect(() => {
+    if (gameboard.checkGameOver()) {
+      makeGameOver();
+    }
+
     // Make the CPU move on turn change
     if (!isPlayerTurn && isPlayerBoard) makeCPUmove();
   }, [isPlayerTurn]);
 
-  useEffect(() => {
-    //console.log(gameboard.checkGameOver());
-  }, [gameboard]);
-
   return (
     <div className="gameboard-grid">
-      {[...new Array(boardWidth * boardWidth)].map((a, i) => (
-        <Cell
-          key={i}
-          index={i}
-          isPlayerBoard={isPlayerBoard}
-          isHit={hitsCoords.includes(i)}
-          isBoat={boatsCoords.includes(i)}
-          isMiss={missesCoords.includes(i)}
-          handleClick={handleClick}
-        />
-      ))}
+      {[...new Array(boardWidth * boardWidth)].map((a, i) => {
+        let { boatsCoords, hitsCoords, missesCoords } = gameboard;
+        return (
+          <Cell
+            key={i}
+            index={i}
+            isPlayerBoard={isPlayerBoard}
+            isHit={hitsCoords.includes(i)}
+            isBoat={boatsCoords.includes(i)}
+            isMiss={missesCoords.includes(i)}
+            handleClick={handleClick}
+          />
+        );
+      })}
     </div>
   );
 }
