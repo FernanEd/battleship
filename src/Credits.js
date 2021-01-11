@@ -4,7 +4,7 @@ export default function Copyright() {
   return (
     <p>
       Made by{' '}
-      <a href="https://github.com/FernanEd" target="_blank">
+      <a href="https://github.com/FernanEd" target="_blank" rel="noreferrer">
         <AiFillGithub />
         FernanEd
       </a>

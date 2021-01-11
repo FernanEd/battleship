@@ -33,24 +33,23 @@ function shiftAxis(index, arrayWidth) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function factoryGameboard(sideLength) {
-  let boats = [
-    { isSunk: false, length, coords: [1, 11] },
-    { isSunk: false, length, coords: [2, 3, 4, 5, 6] },
-  ];
+function factoryGameboard(boardWidth) {
+  let boats = [];
 
-  let boatsCoords = boats.map((boat) => boat.coords).flat(); //All coords that are boats
+  let boatsCoords; //All coords that are boats
 
   let hitsCoords = []; //All coords of boats hits
   let missesCoords = []; //All coords of missed shots
 
   //Axis should be either 0 or 1 for x or y
-  const placeShip = (coord, length, axis) => {
+  const placeShip = (coord, pieceLength, axis) => {
     boats.push({
       isSunk: false,
-      length,
-      coords: giveShipCoords(sideLength, coord, length, axis),
+      pieceLength,
+      coords: giveShipCoords(boardWidth, coord, pieceLength, axis),
     });
+
+    updateBoatCoords();
   };
 
   const checkSunkenShips = () => {
@@ -70,11 +69,37 @@ function factoryGameboard(sideLength) {
     checkSunkenShips();
   };
 
+  const updateBoatCoords = () => {
+    boatsCoords = boats.map((boat) => boat.coords).flat();
+  };
+
   const checkGameOver = () => {
     return boats.every((boat) => boat.isSunk);
   };
 
-  return { hitsCoords, missesCoords, placeShip, receiveAttack, checkGameOver };
+  //Place carrier on cell #2 horizontally;
+  placeShip(1, 5, 0);
+
+  //Place small boat on cell #12 vertically;
+  placeShip(31, 2, 1);
+
+  //Place small boat on cell #12 vertically;
+  placeShip(25, 4, 1);
+
+  //Place small boat on cell #12 vertically;
+  placeShip(82, 3, 0);
+
+  //Place small boat on cell #12 vertically;
+  placeShip(79, 2, 1);
+
+  return {
+    boatsCoords,
+    hitsCoords,
+    missesCoords,
+    placeShip,
+    receiveAttack,
+    checkGameOver,
+  };
 }
 
 export { factoryGameboard, giveShipCoords, shiftAxis };

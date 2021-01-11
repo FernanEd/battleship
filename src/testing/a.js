@@ -1,24 +1,43 @@
-const placeShip = (boardWidth, selectedCoord, pieceLength, pieceAxis) => {
-  let coordsArray = [];
+function factoryGameboard(boardWidth) {
+  let boats = [
+    { isSunk: false, pieceLength, coords: [1, 11] },
+    { isSunk: false, pieceLength, coords: [2, 3, 4, 5, 6] },
+  ];
 
-  let newCord =
-    pieceAxis === 0 ? selectedCoord : shiftAxis(selectedCoord, boardWidth);
+  let boatsCoords = boats.map((boat) => boat.coords).flat(); //All coords that are boats
 
-  // This comparison only works on x pieceAxis, that's why the convertion
-  // The remainder of the cord / boardSize dimention gives
-  // how many cells of offset the selectedCoord has from the first cell of the corresponding row
-  // If the dimension of the board side minus the piece offset
-  // equals the piece lengths it means it will fit perfectly.
+  let hitsCoords = []; //All coords of boats hits
+  let missesCoords = []; //All coords of missed shots
 
-  if (!(boardWidth - (newCord % boardWidth) >= pieceLength)) {
-    return null;
-  }
+  //Axis should be either 0 or 1 for x or y
+  const placeShip = (coord, pieceLength, axis) => {
+    boats.push({
+      isSunk: false,
+      pieceLength,
+      coords: giveShipCoords(boardWidth, coord, pieceLength, axis),
+    });
+  };
 
-  for (let i = coordsArray; i < coordsArray + pieceLength; i++) {
-    coordsArray.push(i);
-  }
+  const checkSunkenShips = () => {
+    boats.forEach((boat) => {
+      let { coords } = boat;
+      //If every coord of the boat IS in hit coords array
+      if (coords.every((coord) => hitsCoords.includes(coord))) {
+        boat.isSunk = true;
+      }
+    });
+  };
 
-  return pieceAxis === 0
-    ? coordsArray
-    : coordsArray.map((selectedCoord) => shiftAxis(selectedCoord, boardWidth));
-};
+  const receiveAttack = (coord) => {
+    if (boatsCoords.includes(coord)) hitsCoords.push(coord);
+    else missesCoords.push(coord);
+
+    checkSunkenShips();
+  };
+
+  const checkGameOver = () => {
+    return boats.every((boat) => boat.isSunk);
+  };
+
+  return { hitsCoords, missesCoords, placeShip, receiveAttack, checkGameOver };
+}
