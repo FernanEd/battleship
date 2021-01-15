@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
-import { factoryGameboard, giveShipCoords, shiftAxis } from '../gameboardLogic';
-import Cell from './Cell';
+import {
+  factoryGameboard,
+  giveShipCoords,
+  shiftAxis,
+} from '../modules/gameboardLogic';
 
 export default function PlacingBoats({ playerBoard, placeShip, nextScreen }) {
   // BOARD STATE

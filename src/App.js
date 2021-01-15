@@ -2,7 +2,11 @@ import { useState } from 'react';
 import TitleScreen from './components/TitleScreen';
 import PlacingBoats from './components/PlacingBoats';
 import Game from './components/Game';
-import { factoryGameboard, giveShipCoords, shiftAxis } from './gameboardLogic';
+import {
+  factoryGameboard,
+  giveShipCoords,
+  shiftAxis,
+} from './modules/gameboardLogic';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState(0);

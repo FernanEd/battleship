@@ -24,7 +24,7 @@ export default function boardAnalisis(difficulty, boatsCoords, usedCoords) {
   };
 
   // Difficulty: | 0 - Standard | 1 - Smart | 2 - Hard
-  let cheatChance = difficulty === 2 ? 25 : difficulty === 1 ? 13 : 7;
+  let cheatChance = difficulty === 2 ? 20 : difficulty === 1 ? 10 : 5;
 
   let randNum = Math.round(Math.random() * 100);
   let canCheat = randNum < cheatChance;

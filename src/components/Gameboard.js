@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
-import { factoryGameboard, giveShipCoords, shiftAxis } from '../gameboardLogic';
+import {
+  factoryGameboard,
+  giveShipCoords,
+  shiftAxis,
+} from '../modules/gameboardLogic';
 import Cell from './Cell';
-import boardAnalisis from '../cpuLogic';
+import boardAnalisis from '../modules/cpuLogic';
 
 export default function Gameboard({
   playerBoard,
