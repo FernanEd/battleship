@@ -4,6 +4,7 @@ import Cell from './Cell';
 import boardAnalisis from '../cpuLogic';
 
 export default function Gameboard({
+  playerBoard,
   isPlayerBoard,
   isPlayerTurn,
   changeTurn,
@@ -17,14 +18,31 @@ export default function Gameboard({
     factoryGameboard(boardWidth, !isPlayerBoard)
   );
 
+  //If is the player board, place the boat placement
+  useEffect(() => {
+    if (isPlayerBoard) {
+      let newBoard = { ...playerBoard };
+      setGameboard(newBoard);
+    }
+  }, []);
+
   const markSpot = (coord) => {
     let newGameboard = { ...gameboard };
     newGameboard.receiveAttack(coord);
     setGameboard(newGameboard);
+
+    //Check for gameovers, end game
+    if (gameboard.checkGameOver()) {
+      makeGameOver(isPlayerTurn);
+    }
   };
 
   const makeCPUmove = () => {
-    let { boatsCoords, hitsCoords, missesCoords } = gameboard;
+    let [boatsCoords, hitsCoords, missesCoords] = [
+      gameboard.getBoatsCoords(),
+      gameboard.getHitsCoords(),
+      gameboard.getMissesCoords(),
+    ];
     markSpot(
       boardAnalisis(computerDifficulty, boatsCoords, [
         ...hitsCoords,
@@ -36,7 +54,11 @@ export default function Gameboard({
 
   //After this function runs, the useEffect of the bottom is supposed to run
   const handleClick = (cellIndex) => {
-    let { boatsCoords, hitsCoords, missesCoords } = gameboard;
+    let [boatsCoords, hitsCoords, missesCoords] = [
+      gameboard.getBoatsCoords(),
+      gameboard.getHitsCoords(),
+      gameboard.getMissesCoords(),
+    ];
 
     let usedCoords = [...hitsCoords, ...missesCoords];
     if (isPlayerTurn && !usedCoords.includes(cellIndex) && !isGameover) {
@@ -47,18 +69,18 @@ export default function Gameboard({
 
   // Every time a move is made
   useEffect(() => {
-    if (gameboard.checkGameOver()) {
-      makeGameOver();
-    }
-
     // Make the CPU move on turn change
-    if (!isPlayerTurn && isPlayerBoard) makeCPUmove();
+    if (!isPlayerTurn && isPlayerBoard && !isGameover) makeCPUmove();
   }, [isPlayerTurn]);
 
   return (
     <div className="gameboard-grid">
       {[...new Array(boardWidth * boardWidth)].map((a, i) => {
-        let { boatsCoords, hitsCoords, missesCoords } = gameboard;
+        let [boatsCoords, hitsCoords, missesCoords] = [
+          gameboard.getBoatsCoords(),
+          gameboard.getHitsCoords(),
+          gameboard.getMissesCoords(),
+        ];
         return (
           <Cell
             key={i}

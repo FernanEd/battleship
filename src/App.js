@@ -8,7 +8,6 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState(0);
   //This should be here
   const [computerDifficulty, setComputerDifficulty] = useState(0);
-
   const [playerBoard, setPlayerBoard] = useState(factoryGameboard(10, false));
 
   const changeDifficulty = (newDifficulty) => {
@@ -21,6 +20,12 @@ export default function App() {
     if (current > 2) current = 0;
 
     setCurrentScreen(current);
+  };
+
+  const placeShip = (coord, pieceLength, axis) => {
+    let newGameboard = { ...playerBoard };
+    newGameboard.placeShip(coord, pieceLength, axis);
+    setPlayerBoard(newGameboard);
   };
 
   return (
@@ -36,11 +41,18 @@ export default function App() {
             <h1>Place your float</h1>
           </div>
           <div className="gameboard-wrapper">
-            <PlacingBoats playerBoard={playerBoard} />
+            <PlacingBoats
+              playerBoard={playerBoard}
+              placeShip={placeShip}
+              nextScreen={nextScreen}
+            />
           </div>
         </div>
       ) : (
-        <Game computerDifficulty={computerDifficulty} />
+        <Game
+          playerBoard={playerBoard}
+          computerDifficulty={computerDifficulty}
+        />
       )}
     </div>
   );

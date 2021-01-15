@@ -18,7 +18,7 @@ export default function Cell({
   return (
     <div
       onClick={() => handleClick(index)}
-      className={isHit ? 'hit' : isBoat ? 'boat' : isMiss ? 'miss' : 'cell'}
+      className={isHit ? 'hit' : isMiss ? 'miss' : 'cell'}
     ></div>
   );
 }

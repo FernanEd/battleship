@@ -112,10 +112,14 @@ function factoryGameboard(boardWidth, generateBoard) {
 
   if (generateBoard) placeComputerShips();
 
+  const getBoatsCoords = () => boatsCoords;
+  const getHitsCoords = () => hitsCoords;
+  const getMissesCoords = () => missesCoords;
+
   return {
-    boatsCoords,
-    hitsCoords,
-    missesCoords,
+    getBoatsCoords,
+    getHitsCoords,
+    getMissesCoords,
     placeShip,
     receiveAttack,
     checkGameOver,

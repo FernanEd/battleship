@@ -167,8 +167,14 @@ a:hover {
   cursor: pointer;
 }
 
-.cell:hover {
+.cell:hover,
+.hovered {
   background-color: #e8e8e8;
+}
+
+.hovered {
+  background-color: #6c757d;
+  cursor: pointer;
 }
 
 .boat {
@@ -213,6 +219,16 @@ a:hover {
 .difficulty-item:hover {
   background-color: var(--primary);
   color: var(--light);
+}
+
+.placing-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
 }
 
 @media (max-width: 678px) {
