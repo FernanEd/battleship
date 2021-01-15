@@ -5,6 +5,8 @@ import {
   shiftAxis,
 } from '../modules/gameboardLogic';
 
+import anime from 'animejs/lib/anime.es.js';
+
 export default function PlacingBoats({ playerBoard, placeShip, nextScreen }) {
   // BOARD STATE
   const boardWidth = 10;
@@ -17,23 +19,36 @@ export default function PlacingBoats({ playerBoard, placeShip, nextScreen }) {
 
   //After this function runs, the useEffect of the bottom is supposed to run
   const handleClick = (cellIndex) => {
+    let boatsCoords = playerBoard.getBoatsCoords();
+
     let shipPotentialCoords = giveShipCoords(
       boardWidth,
       cellIndex,
       pieceLength,
       axis
     );
-    let boatsCoords = playerBoard.getBoatsCoords();
 
     if (
       shipPotentialCoords &&
       shipPotentialCoords.every((coord) => !boatsCoords.includes(coord))
     ) {
+      makePlacingAnimation(
+        shipPotentialCoords.map((coord) => `#cell-${coord}`)
+      );
       let lastPiece = currentPiece;
       setCurrentPiece(lastPiece + 1);
       setPieceLength(pieces[lastPiece + 1]);
       placeShip(cellIndex, pieceLength, axis);
     }
+  };
+
+  const makePlacingAnimation = (targetsID) => {
+    anime({
+      targets: targetsID,
+      opacity: [0, 1],
+      scale: [1.6, 1],
+      duration: 700,
+    });
   };
 
   const handleHover = (cellIndex) => {
@@ -72,6 +87,7 @@ export default function PlacingBoats({ playerBoard, placeShip, nextScreen }) {
           ];
           return (
             <div
+              id={`cell-${i}`}
               key={i}
               index={i}
               onMouseEnter={() => handleHover(i)}

@@ -7,6 +7,8 @@ import {
 import Cell from './Cell';
 import boardAnalisis from '../modules/cpuLogic';
 
+import anime from 'animejs/lib/anime.es.js';
+
 export default function Gameboard({
   playerBoard,
   isPlayerBoard,
@@ -31,6 +33,10 @@ export default function Gameboard({
   }, []);
 
   const markSpot = (coord) => {
+    animateSpot(
+      isPlayerBoard ? `#player-cell-${coord}` : `#computer-cell-${coord}`
+    );
+
     let newGameboard = { ...gameboard };
     newGameboard.receiveAttack(coord);
     setGameboard(newGameboard);
@@ -39,6 +45,15 @@ export default function Gameboard({
     if (gameboard.checkGameOver()) {
       makeGameOver(isPlayerTurn);
     }
+  };
+
+  const animateSpot = (targetID) => {
+    anime({
+      targets: targetID,
+      opacity: [0, 1],
+      scale: [1.6, 1],
+      duration: 700,
+    });
   };
 
   const makeCPUmove = () => {
@@ -74,7 +89,8 @@ export default function Gameboard({
   // Every time a move is made
   useEffect(() => {
     // Make the CPU move on turn change
-    if (!isPlayerTurn && isPlayerBoard && !isGameover) makeCPUmove();
+    if (!isPlayerTurn && isPlayerBoard && !isGameover)
+      setTimeout(makeCPUmove, 500);
   }, [isPlayerTurn]);
 
   return (

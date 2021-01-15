@@ -150,9 +150,16 @@ a:hover {
   text-align: center;
 }
 
+.gameboard-title {
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  align-items: center;
+}
+
 .gameboard-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .gameboard-grid {
@@ -173,19 +180,23 @@ a:hover {
 }
 
 .hovered {
+  border: 1px solid var(--secondary);
   background-color: #6c757d;
   cursor: pointer;
 }
 
 .boat {
+  border: 1px solid var(--secondary);
   background-color: var(--primary);
 }
 
 .hit {
+  border: 1px solid var(--secondary);
   background-color: var(--success);
 }
 
 .miss {
+  border: 1px solid var(--secondary);
   background-color: #6c757d;
 }
 
@@ -229,6 +240,11 @@ a:hover {
   justify-content: center;
   align-items: center;
   gap: 1em;
+}
+
+#main-title {
+  text-align: center;
+  font-size: 3em;
 }
 
 @media (max-width: 678px) {

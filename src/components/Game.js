@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Gameboard from './Gameboard';
+import { ImUser, ImSmile2, ImGrin2, ImEvil2 } from 'react-icons/im';
 
 export default function Game({ playerBoard, computerDifficulty }) {
   //player 0 = human, player 1 = computer
@@ -34,7 +35,9 @@ export default function Game({ playerBoard, computerDifficulty }) {
 
       <div className="gameboard-wrapper">
         <div>
-          <h1>Player board</h1>
+          <h1 className="gameboard-title">
+            Player <ImUser />
+          </h1>
           <Gameboard
             isPlayerBoard={true}
             isPlayerTurn={isPlayerTurn}
@@ -46,7 +49,16 @@ export default function Game({ playerBoard, computerDifficulty }) {
           />
         </div>
         <div>
-          <h1>Computer board</h1>
+          <h1 class="gameboard-title">
+            Computer{' '}
+            {computerDifficulty === 2 ? (
+              <ImEvil2 />
+            ) : computerDifficulty === 1 ? (
+              <ImGrin2 />
+            ) : (
+              <ImSmile2 />
+            )}
+          </h1>
           <Gameboard
             isPlayerBoard={false}
             isPlayerTurn={isPlayerTurn}

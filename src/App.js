@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TitleScreen from './components/TitleScreen';
 import PlacingBoats from './components/PlacingBoats';
 import Game from './components/Game';
@@ -7,6 +7,8 @@ import {
   giveShipCoords,
   shiftAxis,
 } from './modules/gameboardLogic';
+
+import anime from 'animejs/lib/anime.es.js';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -23,6 +25,7 @@ export default function App() {
     current++;
     if (current > 2) current = 0;
 
+    makeTransition();
     setCurrentScreen(current);
   };
 
@@ -30,6 +33,20 @@ export default function App() {
     let newGameboard = { ...playerBoard };
     newGameboard.placeShip(coord, pieceLength, axis);
     setPlayerBoard(newGameboard);
+  };
+
+  useEffect(() => {
+    makeTransition();
+  }, []);
+
+  const makeTransition = () => {
+    anime({
+      targets: '#content',
+      translateY: [0, 10],
+      opacity: [0, 1],
+      duration: 300,
+      easing: 'linear',
+    });
   };
 
   return (

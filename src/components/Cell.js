@@ -10,6 +10,7 @@ export default function Cell({
   if (isPlayerBoard) {
     return (
       <div
+        id={`player-cell-${index}`}
         className={isHit ? 'hit' : isBoat ? 'boat' : isMiss ? 'miss' : 'cell'}
       ></div>
     );
@@ -17,6 +18,7 @@ export default function Cell({
 
   return (
     <div
+      id={`computer-cell-${index}`}
       onClick={() => handleClick(index)}
       className={isHit ? 'hit' : isMiss ? 'miss' : 'cell'}
     ></div>
