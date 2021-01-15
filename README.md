@@ -6,3 +6,4 @@ A web app to play battleship
 
 - More React
 - TDD development with Jest
+- AnimeJS in React
